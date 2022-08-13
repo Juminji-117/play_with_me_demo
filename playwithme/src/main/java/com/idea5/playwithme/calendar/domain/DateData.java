@@ -1,4 +1,4 @@
-package com.idea5.playwithme.calendar;
+package com.idea5.playwithme.calendar.domain;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

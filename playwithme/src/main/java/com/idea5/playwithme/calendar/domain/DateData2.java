@@ -1,4 +1,4 @@
-package com.idea5.playwithme.calendar;
+package com.idea5.playwithme.calendar.domain;
 
 import com.idea5.playwithme.event.domain.Event;
 import lombok.Data;

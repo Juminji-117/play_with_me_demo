@@ -1,4 +1,4 @@
-package com.idea5.playwithme.calendar.controller;
+package com.idea5.playwithme.calendar.domain.controller;
 
 
 import com.idea5.playwithme.event.domain.Event;
@@ -22,14 +22,12 @@ public class CalendarController {
     private List<Event> events = new ArrayList<>();
 
     @GetMapping("/event/{category}")
-    @ResponseBody
     public String showEvent(Model model, @PathVariable("default=0") Long category) {
         model.addAttribute("category", eventRepository.findByCategoryId(category));
         return "calendar";
     }
 
-    @GetMapping("/events") // 테스트용 // calendar페이지로 이동 안됨
-    @ResponseBody
+    @GetMapping("/events")
     public String showEventdefault() {
         return "calendar";
     }
