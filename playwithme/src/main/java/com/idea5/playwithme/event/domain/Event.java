@@ -18,9 +18,9 @@ public class Event {
     @Column(name = "event_id")
     private Long id;
 
-    private Long categoryId;
+    private Integer categoryId;
 
-    @Column(length = 20)
+    @Column(length = 100)
     private String name;
 
     @Column(length = 200)
@@ -28,7 +28,6 @@ public class Event {
 
     @CreatedDate
     private LocalDateTime date;
-
 
 
 //    @OneToOne(mappedBy = "event", fetch = FetchType.LAZY)
