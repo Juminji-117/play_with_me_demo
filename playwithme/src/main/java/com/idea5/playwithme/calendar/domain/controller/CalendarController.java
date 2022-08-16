@@ -24,7 +24,7 @@ public class CalendarController {
     private EventService eventService;
     private List<Event> events = new ArrayList<>();
 
-    @GetMapping("/calendar") // 템플릿 적용 확인 테스트용
+    @GetMapping("/event") // 템플릿 적용 확인 테스트용
     public String showCalendar(){ // 템플릿 적용 확인 테스트용
         return "calendar";
     }
