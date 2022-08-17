@@ -34,7 +34,7 @@ function init_calendar(date) {
     // 35+firstDay is the number of date elements to be added to the dates table
     // 35 is from (7 days in a week) * (up to 5 rows of dates in a month)
     for(var i=0; i<35+first_day; i++) {
-        // Since some of the elements will be blank, 
+        // Since some of the elements will be blank,
         // need to calculate actual date from index
         var day = i-first_day+1;
         // If it is a sunday, make a new row
@@ -46,7 +46,7 @@ function init_calendar(date) {
         if(i < first_day || day > day_count) {
             var curr_date = $("<td class='table-date nil'>"+"</td>");
             row.append(curr_date);
-        }   
+        }
         else {
             var curr_date = $("<td class='table-date'>"+day+"</td>");
             var events = check_events(day, month+1, year);
@@ -59,7 +59,8 @@ function init_calendar(date) {
                 curr_date.addClass("event-date");
             }
             // Set onClick handler for clicking a date
-            curr_date.click({events: events, month: months[month], day:day}, date_click);
+            //TODO: date data get 요청 구현 필요
+            curr_date.click({events: events, year: year, month: month+1, day:day}, date_click);
             row.append(curr_date);
         }
     }
@@ -72,9 +73,10 @@ function init_calendar(date) {
 function days_in_month(month, year) {
     var monthStart = new Date(year, month, 1);
     var monthEnd = new Date(year, month + 1, 1);
-    return (monthEnd - monthStart) / (1000 * 60 * 60 * 24);    
+    return (monthEnd - monthStart) / (1000 * 60 * 60 * 24);
 }
 
+// TODO: date data get 요청 구현 필요
 // Event handler for when a date is clicked
 function date_click(event) {
     $(".events-container").show(250);
@@ -82,6 +84,7 @@ function date_click(event) {
     $(".active-date").removeClass("active-date");
     $(this).addClass("active-date");
     show_events(event.data.events, event.data.month, event.data.day);
+    console.log(event.data.year, event.data.month, event.data.day);
 };
 
 // Event handler for when a month is clicked
@@ -177,7 +180,7 @@ function show_events(events, month, day) {
     // Clear the dates container
     $(".events-container").empty();
     $(".events-container").show(250);
-    console.log(event_data["events"]);
+    //console.log(event_data["events"]);
     // If there are no events for this date, notify the user
     if(events.length===0) {
         var event_card = $("<div class='event-card'></div>");
@@ -307,19 +310,20 @@ var event_data = {
     ]
 };
 
-const months = [ 
-    "January", 
-    "February", 
-    "March", 
-    "April", 
-    "May", 
-    "June", 
-    "July", 
-    "August", 
-    "September", 
-    "October", 
-    "November", 
-    "December" 
+//TODO
+const months = [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
 ];
 
 })(jQuery);
