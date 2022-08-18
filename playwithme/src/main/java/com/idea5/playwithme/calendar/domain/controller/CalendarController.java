@@ -5,11 +5,17 @@ import com.idea5.playwithme.event.domain.service.EventService;
 
 import lombok.AllArgsConstructor;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,13 +49,18 @@ public class CalendarController {
         events = eventService.findByCategoryId(categoryId);
 
         model.addAttribute("events", events);
+        model.addAttribute("categoryId",categoryId);
 
         return "calendar";
     }
 
+/*
+    @GetMapping("/event/test/{date}")
+    public String questionCreate(@PathVariable String date) {
 
-
-
+        return "calendar";
+    }
+*/
 
 }
 

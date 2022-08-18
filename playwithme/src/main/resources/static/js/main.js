@@ -59,7 +59,7 @@ function init_calendar(date) {
                 curr_date.addClass("event-date");
             }
             // Set onClick handler for clicking a date
-            //TODO: date data get 요청 구현 필요
+            //TODO: date data를 RequestParam으로 get 요청 구현 필요
             curr_date.click({events: events, year: year, month: month+1, day:day}, date_click);
             row.append(curr_date);
         }
@@ -75,8 +75,7 @@ function days_in_month(month, year) {
     var monthEnd = new Date(year, month + 1, 1);
     return (monthEnd - monthStart) / (1000 * 60 * 60 * 24);
 }
-
-// TODO: date data get 요청 구현 필요
+// TODO: date data를 RequestParam으로 get 요청 구현 필요
 // Event handler for when a date is clicked
 function date_click(event) {
     $(".events-container").show(250);
@@ -84,7 +83,20 @@ function date_click(event) {
     $(".active-date").removeClass("active-date");
     $(this).addClass("active-date");
     show_events(event.data.events, event.data.month, event.data.day);
-    console.log(event.data.year, event.data.month, event.data.day);
+
+/*
+    var yr = String(event.data.year);
+    var mt = String(event.data.month);
+    var dy = String(event.data.day)
+    var dateParam = yr + "-" + mt + "-" + dy;
+    location.href="event/test/"+"{"+dateParam+"}";
+*/
+
+   //location.href="event/test"+"?date="+event.data.year+"-"+event.data.month+"-"+event.data.day;
+
+    var link =  document.location.href;
+    console.log(link);
+
 };
 
 // Event handler for when a month is clicked
@@ -164,7 +176,7 @@ function new_event(event) {
 }
 
 // Adds a json event to event_data
-function new_event_json(name, count, date, day) {
+function new_event_json(name, count, date, day) { // TODO: json 형태말고 일반 객체 속성을 event_data["events"]배열에 저장하는 법 찾아보기
     var event = {
         "occasion": name,
         "invited_count": count,
@@ -191,17 +203,17 @@ function show_events(events, month, day) {
     }
     else {
         // Go through and add each event as a card to the events container
-        for(var i=0; i<events.length; i++) {
+        for(var i=0; i<events.length; i++) { //TODO: 여기에 Event 엔티티 컬럼들 추가
             var event_card = $("<div class='event-card'></div>");
-            var event_name = $("<div class='event-name'>"+events[i]["occasion"]+":</div>");
-            var event_count = $("<div class='event-count'>"+events[i]["invited_count"]+" Invited</div>");
+            var event_name = $("<div class='event-name'>"+events[i]["occasion"]+":</div>"); // occasion 대신 변수명
+            var event_count = $("<div class='event-count'>"+events[i]["invited_count"]+" Invited</div>"); // invited_count 대신 변수명
             if(events[i]["cancelled"]===true) {
                 $(event_card).css({
                     "border-left": "10px solid #FF1744"
                 });
                 event_count = $("<div class='event-cancelled'>Cancelled</div>");
             }
-            $(event_card).append(event_name).append(event_count);
+            $(event_card).append(event_name).append(event_count); // 요소 추가하면 여기도 추가
             $(".events-container").append(event_card);
         }
     }
