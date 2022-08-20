@@ -84,18 +84,29 @@ function date_click(event) {
     $(this).addClass("active-date");
     show_events(event.data.events, event.data.month, event.data.day);
 
-/*
-    var yr = String(event.data.year);
-    var mt = String(event.data.month);
-    var dy = String(event.data.day)
-    var dateParam = yr + "-" + mt + "-" + dy;
-    location.href="event/test/"+"{"+dateParam+"}";
-*/
 
-   //location.href="event/test"+"?date="+event.data.year+"-"+event.data.month+"-"+event.data.day;
-
-    var link =  document.location.href;
-    console.log(link);
+        //location.href+= "?date="+event.data.year+"-"+event.data.month+"-"+event.data.day;
+             var dateString = event.data.year + "-";
+                        if ((event.data.month) < 10) {
+                        	dateString += "0";
+                        }
+                        dateString += (event.data.month) + "-";
+                        if (event.data.day < 10) {
+                        	dateString += "0";
+                        }
+                        dateString += event.data.day;
+   let params = (new URL(document.location)).searchParams;
+   const categoryName = params.get("category");
+   const categoryName_2 = categoryName;
+   params.set("category",categoryName_2);
+   params.set("date",dateString);
+   const state = { 'category':categoryName_2, 'date': dateString }
+   const title = ''
+   const url = "event?"+ params
+   history.pushState(state, title, url)
+   console.log(categoryName_2);
+   let name2 = params.get("date");
+   console.log(name2);
 
 };
 

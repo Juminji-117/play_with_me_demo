@@ -25,13 +25,73 @@ public class CalendarController {
     private EventService eventService;
     private List<Event> events = new ArrayList<>();
 
+    /*
     @GetMapping("/event") // 템플릿 적용 확인 테스트용
-    public String showCalendar(){ // 템플릿 적용 확인 테스트용
+    public String showCalendar() { // 템플릿 적용 확인 테스트용
+        return "calendar";
+    }
+*/
+
+    @GetMapping("/event")
+    public String showEvent(Model model, @RequestParam String category,@RequestParam(defaultValue = "new SimpleDateFormat(\"yyyy-MM-dd\").format(new Date())") String date) {
+        Integer categoryId = 0;
+        switch (category) {
+            case "baseball":
+                categoryId = 1;
+                break;
+            case "soccer":
+                categoryId = 2;
+                break;
+            case "basketball":
+                categoryId = 3;
+                break;
+            case "musical":
+                categoryId = 4;
+                break;
+            case "concert":
+                categoryId = 5;
+                break;
+        }
+
+        events = eventService.findByCategoryId(categoryId);
+
+        model.addAttribute("events", events);
+        model.addAttribute("categoryId", categoryId);
+
         return "calendar";
     }
 
-    @GetMapping("/event/{category}")
-    public String showEvent(Model model, @PathVariable String category) {
+}
+
+/*
+    @GetMapping("/event/test/{date}")
+    public String questionCreate(@PathVariable String date) {
+
+        return "calendar";
+    }
+*/
+    /* inputCategory 파라미터를 받아, 미리 저장된 Map에서 해당 카테고리에 맵핑된 객체를 리턴해주는 메소드 */
+    /*
+@GetMapping("/getEvent")
+public Map<String,Object> getEventByCategoryId( @RequestParam Integer categoryId ) {
+    Map<String, Integer> ageMap = new HashMap<>();
+
+    events = eventService.findByCategoryId(categoryId);
+
+    for (Event event_ : events)
+    ageMap.put(event_);
+
+    Map<String,Object> returnMap = new HashMap<>();
+    returnMap.put("name", categoryId);
+    returnMap.put("age", ageMap.get(categoryId));
+
+    return returnMap;
+}
+    */
+
+    /*
+       @GetMapping("/event/{category}")
+    public String showEvent(Model model, @PathVariable String category, @RequestParam(defaultValue = "new SimpleDateFormat(\"yyyy-MM-dd\").format(new Date())") String date) {
         Integer categoryId = 0;
         switch(category) {
             case "baseball": categoryId = 1;
@@ -53,16 +113,8 @@ public class CalendarController {
 
         return "calendar";
     }
+     */
 
-/*
-    @GetMapping("/event/test/{date}")
-    public String questionCreate(@PathVariable String date) {
-
-        return "calendar";
-    }
-*/
-
-}
 
 
 
