@@ -2,17 +2,13 @@ package com.idea5.playwithme.calendar.domain.controller;
 
 import com.idea5.playwithme.event.domain.Event;
 import com.idea5.playwithme.event.domain.service.EventService;
-
 import lombok.AllArgsConstructor;
-
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -33,7 +29,7 @@ public class CalendarController {
 */
 
     @GetMapping("/event")
-    public String showEvent(Model model, @RequestParam String category,@RequestParam(defaultValue = "new SimpleDateFormat(\"yyyy-MM-dd\").format(new Date())") String date) {
+    public String showEvent(Model model, @RequestParam String category, @RequestParam(defaultValue = "new SimpleDateFormat(\"yyyy-MM-dd\").format(new Date())") String date) {
         Integer categoryId = 0;
         switch (category) {
             case "baseball":
@@ -60,9 +56,85 @@ public class CalendarController {
 
         return "calendar";
     }
+    @GetMapping("/getEvent")
+    @ResponseBody
+    public List<Event> getEvent(Model model, @RequestParam String category, @RequestParam(defaultValue = "new SimpleDateFormat(\"yyyy-MM-dd\").format(new Date())") String date ) {
+        Integer categoryId = 0;
+        switch (category) {
+            case "baseball":
+                categoryId = 1;
+                break;
+            case "soccer":
+                categoryId = 2;
+                break;
+            case "basketball":
+                categoryId = 3;
+                break;
+            case "musical":
+                categoryId = 4;
+                break;
+            case "concert":
+                categoryId = 5;
+                break;
+        }
+
+        //String -> LocalDate로 파싱
+        LocalDate localDateType = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
+        //LocalDate -> LocalDateTime으로 파싱
+        LocalDateTime localDateTimeType = localDateType.atStartOfDay();
+
+        events = eventService.findByCategoryIdAndDate(categoryId, localDateTimeType);
+
+        return events;
+    }
+}
+    /* 단일 데이터 event는 JSON 헝태로 잘 전송됨
+    @GetMapping("/getEvent")
+    @ResponseBody
+    public Event getEvent(Model model, @RequestParam String category, @RequestParam(defaultValue = "new SimpleDateFormat(\"yyyy-MM-dd\").format(new Date())") String date ) {
+        Integer categoryId = 0;
+        switch (category) {
+            case "baseball":
+                categoryId = 1;
+                break;
+            case "soccer":
+                categoryId = 2;
+                break;
+            case "basketball":
+                categoryId = 3;
+                break;
+            case "musical":
+                categoryId = 4;
+                break;
+            case "concert":
+                categoryId = 5;
+                break;
+        }
+        Event event = new Event();
+        event.setId(3L);
+        event.setCategoryId(1);
+        event.setName("어섭쇼");
+        event.setLocation("서울");
+        event.setDate(LocalDateTime.of(2022,8,15,00,00,00));
+        return event;
+    }
+    */
+
+
+    /*
+@RequestMapping("/getJson")
+@ResponseBody
+public String eventToJson(HttpServletResponse rs, Model model){
+    try {
+        rs.setContentType("text/html;charset=utf-8");
+        PrintWriter out = rs.getWriter();
+        return eventService.eventDtoMapToJsonStr();
+    } catch (IOException e) {
+        throw new RuntimeException(e);
+    }
 
 }
-
+*/
 /*
     @GetMapping("/event/test/{date}")
     public String questionCreate(@PathVariable String date) {

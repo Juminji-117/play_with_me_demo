@@ -14,6 +14,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     public List<Event> findByCategoryId(Integer id);
 
     List<Event> findByDate(LocalDateTime date);
-    Page<Event> findByCategoryIdAndTags(List<String> categoryIdList, List<String> filters, Pageable pageable);
+    List<Event> findByCategoryIdAndDate(Integer categoryId, LocalDateTime date);
+
 }
 

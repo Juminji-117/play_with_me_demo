@@ -107,6 +107,22 @@ function date_click(event) {
    let name2 = params.get("date");
    console.log(name2);
    // URL 관련 추가 끝
+
+   //ajax로 Event 받아오기
+   $.ajax({
+   type:"GET",
+   url:"/getEvent?"+ params,
+   dataType:"JSON",
+
+   success: function(data){
+       console.log("통신성공");
+       console.log(data);
+   },
+   error:function(){
+       console.log("통신에러");
+   }
+   })
+
 };
 
 // Event handler for when a month is clicked

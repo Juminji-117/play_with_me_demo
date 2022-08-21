@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.idea5.playwithme.event.domain.Event;
 
+import java.net.http.HttpResponse;
+
 public class Ut {
     public static class json {
         public static String toStr(Object obj, String defaultValue) {
@@ -16,4 +18,5 @@ public class Ut {
             }
         }
     }
+
 }
