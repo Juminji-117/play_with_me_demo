@@ -27,7 +27,7 @@ public class CalendarController {
 
     /*
     @GetMapping("/event") // 템플릿 적용 확인 테스트용
-    public String showCalendar() { // 템플릿 적용 확인 테스트용
+    public String showCalendar() {
         return "calendar";
     }
 */

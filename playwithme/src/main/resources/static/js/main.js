@@ -84,17 +84,16 @@ function date_click(event) {
     $(this).addClass("active-date");
     show_events(event.data.events, event.data.month, event.data.day);
 
-
-        //location.href+= "?date="+event.data.year+"-"+event.data.month+"-"+event.data.day;
-             var dateString = event.data.year + "-";
-                        if ((event.data.month) < 10) {
-                        	dateString += "0";
-                        }
-                        dateString += (event.data.month) + "-";
-                        if (event.data.day < 10) {
-                        	dateString += "0";
-                        }
-                        dateString += event.data.day;
+    //여기서부터 URL 관련 추가한 부분
+    var dateString = event.data.year + "-";
+      if ((event.data.month) < 10) {
+         dateString += "0";
+          }
+      dateString += (event.data.month) + "-";
+      if (event.data.day < 10) {
+         dateString += "0";
+         }
+         dateString += event.data.day;
    let params = (new URL(document.location)).searchParams;
    const categoryName = params.get("category");
    const categoryName_2 = categoryName;
@@ -107,7 +106,7 @@ function date_click(event) {
    console.log(categoryName_2);
    let name2 = params.get("date");
    console.log(name2);
-
+   // URL 관련 추가 끝
 };
 
 // Event handler for when a month is clicked
