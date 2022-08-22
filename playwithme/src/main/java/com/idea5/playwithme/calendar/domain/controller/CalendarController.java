@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @AllArgsConstructor
@@ -58,7 +59,20 @@ public class CalendarController {
     }
     @GetMapping("/getEvent")
     @ResponseBody
-    public List<Event> getEvent(Model model, @RequestParam String category, @RequestParam(defaultValue = "new SimpleDateFormat(\"yyyy-MM-dd\").format(new Date())") String date ) {
+    public List<Event> getEvent(Model model, @RequestParam String category,  @RequestParam(defaultValue = "0")String date ) {
+        LocalDate searchDate;
+
+        if(date.equals("0")){ // 아무것도 입력하지 않았을 때는 당일 날짜로 고정
+            searchDate = LocalDate.now();
+        }
+        else{ // 입력한 String형의 데이터를 localdate로 변환
+            int [] dateInfo = Arrays.stream(date.split("-"))
+                    .mapToInt(Integer::parseInt)
+                    .toArray();
+
+            searchDate =  LocalDate.of(dateInfo[0],dateInfo[1],dateInfo[2]);
+        }
+
         Integer categoryId = 0;
         switch (category) {
             case "baseball":
@@ -78,12 +92,7 @@ public class CalendarController {
                 break;
         }
 
-        //String -> LocalDate로 파싱
-        LocalDate localDateType = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
-        //LocalDate -> LocalDateTime으로 파싱
-        LocalDateTime localDateTimeType = localDateType.atStartOfDay();
-
-        events = eventService.findByCategoryIdAndDate(categoryId, localDateTimeType);
+        events = eventService.getEventsByCategoryAndDate(categoryId, searchDate);
 
         return events;
     }
@@ -113,7 +122,7 @@ public class CalendarController {
         Event event = new Event();
         event.setId(3L);
         event.setCategoryId(1);
-        event.setName("어섭쇼");
+        event.setName("KBA경기");
         event.setLocation("서울");
         event.setDate(LocalDateTime.of(2022,8,15,00,00,00));
         return event;
