@@ -59,7 +59,6 @@ function init_calendar(date) {
                 curr_date.addClass("event-date");
             }
             // Set onClick handler for clicking a date
-            //TODO: date data를 RequestParam으로 get 요청 구현 필요
             curr_date.click({events: events, year: year, month: month+1, day:day}, date_click);
             row.append(curr_date);
         }
@@ -117,6 +116,10 @@ function date_click(event) {
    success: function(data){
        console.log("통신성공");
        console.log(data);
+       //event_data["events"].push(data); // 아래 코드 안되면 대체
+       event_data["events"] = data.slice();
+       console.log(event_data["events"]);
+
    },
    error:function(){
        console.log("통신에러");
@@ -231,20 +234,35 @@ function show_events(events, month, day) {
         // Go through and add each event as a card to the events container
         for(var i=0; i<events.length; i++) { //TODO: 여기에 Event 엔티티 컬럼들 추가
             var event_card = $("<div class='event-card'></div>");
-            var event_name = $("<div class='event-name'>"+events[i]["occasion"]+":</div>"); // occasion 대신 변수명
-            var event_count = $("<div class='event-count'>"+events[i]["invited_count"]+" Invited</div>"); // invited_count 대신 변수명
-            if(events[i]["cancelled"]===true) {
-                $(event_card).css({
-                    "border-left": "10px solid #FF1744"
-                });
-                event_count = $("<div class='event-cancelled'>Cancelled</div>");
-            }
-            $(event_card).append(event_name).append(event_count); // 요소 추가하면 여기도 추가
+            var event_name = $("<div class='event-name'>"+events[i]["name"]+":</div>"); // occasion 대신 변수명
+            var event_location = $("<div class='event-location'>"+events[i]["location"]+"</div>"); // invited_count 대신 변수명
+            $(event_card).append(event_name).append(event_location); // 요소 추가하면 여기도 추가
             $(".events-container").append(event_card);
         }
     }
 }
 
+//TODO: 수정해서 새로 만들기
+// Checks if a specific date has any events
+function check_events(day, month, year) {
+    var events = [];
+
+    for (var i=0; i<event_data["events"].length; i++)
+    var str = Date.parse(event_data[i]["date"]
+    var arr = [];
+    var arr = new Date() // event_data[events]
+
+    for(var i=0; i<event_data["events"].length; i++) {
+        var event = event_data["events"][i];
+        if(event["day"]===day &&
+            event["month"]===month &&
+            event["year"]===year) {
+                events.push(event);
+            }
+    }
+    return events;
+}
+/*
 // Checks if a specific date has any events
 function check_events(day, month, year) {
     var events = [];
@@ -258,7 +276,7 @@ function check_events(day, month, year) {
     }
     return events;
 }
-
+*/
 // Given data for events in JSON format
 var event_data = {
     "events": [
