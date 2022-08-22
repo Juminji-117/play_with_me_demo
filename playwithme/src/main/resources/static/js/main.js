@@ -74,7 +74,6 @@ function days_in_month(month, year) {
     var monthEnd = new Date(year, month + 1, 1);
     return (monthEnd - monthStart) / (1000 * 60 * 60 * 24);
 }
-// TODO: date data를 RequestParam으로 get 요청 구현 필요
 // Event handler for when a date is clicked
 function date_click(event) {
     $(".events-container").show(250);
@@ -110,15 +109,17 @@ function date_click(event) {
    //ajax로 Event 받아오기
    $.ajax({
    type:"GET",
+   async: false, // 동기 호출(실행 다 끝난 다음에 다음 로직 수행)
    url:"/getEvent?"+ params,
    dataType:"JSON",
 
    success: function(data){
        console.log("통신성공");
-       console.log(data);
-       //event_data["events"].push(data); // 아래 코드 안되면 대체
-       event_data["events"] = data.slice();
-       console.log(event_data["events"]);
+       //console.log(data);
+       //event_data2.push(data); // 아래 미작동시 후보코드, 문제: 이 코드는 배열 속 배열 생성
+       event_data2 = data.slice();
+       console.log(event_data2); // 제대로 출력
+       console.log(event_data2.length); // 제대로 출력
 
    },
    error:function(){
@@ -126,6 +127,58 @@ function date_click(event) {
    }
    })
 
+    // 캘린더 날짜와 이벤트 날짜 동일한지 체크
+    //console.log("event_data2 그대로 있는지 아래 확인 : ");
+    //console.log(event_data2);
+     var event_data3 = []
+     for(var i=0; i<event_data2.length; i++) {
+           var event = event_data2[i];
+           //console.log("event :");
+           //console.log(event); // 제대로 작동
+           const str = event_data2[i].date;
+           // console.log(str); // 2022-08-15T17:30:00로 출력
+           var a=str.split("-")[0]
+           var b=str.split("-")[1]
+           var c=str.split("-")[2].split("T")[0]
+           // console.log(a); // 2022
+           // console.log(b); // 08
+           // console.log(c); // 15
+          // var strArr = str.toString().split('-'); // 후보
+           //console.log(strArr[0], strArr[1]-1, strArr[2]); // 후보
+           var dt = new Date();
+           if(a==dt.getFullYear() &&
+              b==dt.getMonth()+1 &&
+               c==dt.getDate()) {//TODO: event가 event_data3로 push가 안되고 있음. 배열->배열 저장 서치해보기
+                   event_data3.push(event);
+                   console.log("event_data3 :");
+                   console.log(event_data3);
+               }
+
+       }
+
+
+       // 이벤트 카드에 이벤트 보여주기
+        $(".events-container").empty();
+           $(".events-container").show(250);
+           //console.log(event_data["events"]);
+           // If there are no events for this date, notify the user
+           if(event_data3.length===0) {
+               var event_card = $("<div class='event-card'></div>");
+               var event_name = $("<div class='event-name'>There are no events planned today </div>");
+               $(event_card).css({ "border-left": "10px solid #FF1744" });
+               $(event_card).append(event_name);
+               $(".events-container").append(event_card);
+           }
+           else {
+               // Go through and add each event as a card to the events container
+               for(var i=0; i<event_data3.length; i++) { //TODO: 여기에 Event 엔티티 컬럼들 추가
+                   var event_card = $("<div class='event-card'></div>");
+                   var event_name = $("<div class='event-name'>"+event_data3[i].name+":</div>"); // occasion 대신 변수명 //TODO: 작동 체크
+                   var event_location = $("<div class='event-location'>"+event_data3[i].location+"</div>"); // invited_count 대신 변수명 //TODO: 작동 체크
+                   $(event_card).append(event_name).append(event_location); // 요소 추가하면 여기도 추가 //TODO: 작동 체크
+                   $(".events-container").append(event_card);
+               }
+           }
 };
 
 // Event handler for when a month is clicked
@@ -242,27 +295,7 @@ function show_events(events, month, day) {
     }
 }
 
-//TODO: 수정해서 새로 만들기
-// Checks if a specific date has any events
-function check_events(day, month, year) {
-    var events = [];
 
-    for (var i=0; i<event_data["events"].length; i++)
-    var str = Date.parse(event_data[i]["date"]
-    var arr = [];
-    var arr = new Date() // event_data[events]
-
-    for(var i=0; i<event_data["events"].length; i++) {
-        var event = event_data["events"][i];
-        if(event["day"]===day &&
-            event["month"]===month &&
-            event["year"]===year) {
-                events.push(event);
-            }
-    }
-    return events;
-}
-/*
 // Checks if a specific date has any events
 function check_events(day, month, year) {
     var events = [];
@@ -276,7 +309,14 @@ function check_events(day, month, year) {
     }
     return events;
 }
-*/
+
+
+//TODO: 작동 체크
+//어차피 slice하면 sample date 사라짐
+//함수 내부에서 var 붙이면 지역변수, 안붙이면 전역변수
+//함수내부가 아닐 때는 var 꼭 붙여야 함
+var event_data2=[];
+
 // Given data for events in JSON format
 var event_data = {
     "events": [
