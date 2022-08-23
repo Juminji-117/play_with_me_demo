@@ -115,71 +115,46 @@ function date_click(event) {
 
    success: function(data){
        console.log("통신성공");
-       //console.log(data);
+       //console.log("data:")
+       //console.log(data); // 데이터는 클릭시 계속 잘 담아와짐
+       console.log("push하기 전 event_data2");
+       console.log(event_data2);
+       console.log("push하기 전 event_data2[0]");
+       console.log(event_data2[0]);
        event_data2.push(data); // 아래 미작동시 후보코드, 문제: 이 코드는 배열 속 배열 생성
        //event_data2 = data.slice();
-       console.log(event_data2[0]); // 제대로 출력
-       console.log(event_data2[0].length); // 제대로 출력
+       console.log(event_data2[0]); // TODO: 두번째 시도시 실패
+       console.log(event_data2[0].length); // TODO: 두번째 시도시 실패
 
+          // event-container에 event를 event-card에 담아 전달 //TODO:클릭할 때마다 변해야 되는데 안변함. 배열에 계속 값이 들어가있음.비워주기
+            $(".events-container").empty();
+            $(".events-container").show(250);
+            if(event_data2[0].length===0) {
+                  var event_card = $("<div class='event-card'></div>");
+                  var event_name = $("<div class='event-name'>There are no events planned for Today.</div>");
+                  $(event_card).css({ "border-left": "10px solid #FF1744" });
+                  $(event_card).append(event_name);
+                  $(".events-container").append(event_card);
+              }
+              else {
+                   for(var i=0; i<event_data2[0].length; i++) {
+                   var event_card = $("<div class='event-card'></div>");
+                   var event_name = $("<div class='event-name'>행사명 : "+event_data2[0][i].name+"</div>");
+                   var event_location = $("<div class='event-location'> 위치 : "+event_data2[0][i].location+"</div>");
+                   var event_dateString = $("<div class='event-dateString'>일시 : "+event_data2[0][i].date.split("T")[0]+"</div>");
+                   var event_urlNotice = $("<div class='event-urlNotice'> 모집 게시판 바로가기 </div>");
+                   $(event_card).append(event_name).append(event_location).append(event_dateString).append(event_urlNotice);
+                   $(".events-container").append(event_card);
+          }
+          }
+
+          event_data2.length=0; // 객체 비워주기
    },
    error:function(){
        console.log("통신에러");
    }
    })
-
-    // 캘린더 날짜와 이벤트 날짜 동일한지 체크
-    console.log("event_data2 그대로 있는지 아래 확인 : ");
-    console.log(event_data2[0]); // 확인
-     for(var i=0; i<event_data2[0].length; i++) {
-          var event_data3 = []
-           var event = event_data2[0][i];
-           console.log("event :");
-           console.log(event); // 제대로 작동
-           const str = event_data2[0][i].date;
-           console.log(str); // 2022-08-15T17:30:00로 출력
-           var a=str.split("-")[0]
-           var b=str.split("-")[1]
-           var c=str.split("-")[2].split("T")[0]
-           // console.log(a); // 2022
-           // console.log(b); // 08
-           // console.log(c); // 15
-          // var strArr = str.toString().split('-'); // 후보
-           //console.log(strArr[0], strArr[1]-1, strArr[2]); // 후보
-              var dt = new Date();
-           if(a==dt.getFullYear() &&
-              b==dt.getMonth()+1 &&
-               c==dt.getDate()) {//TODO: 이 조건문 false
-               console.log('실행')
-                   event_data3.push(event);
-                   console.log("event_data3 :");
-                   console.log(event_data3);
-               }
-
-       }
-
-
-       // 이벤트 카드에 이벤트 보여주기
-        $(".events-container").empty();
-           $(".events-container").show(250);
-           //console.log(event_data["events"]);
-           // If there are no events for this date, notify the user
-           if(event_data3.length===0) {
-               var event_card = $("<div class='event-card'></div>");
-               var event_name = $("<div class='event-name'>There are no events planned today </div>");
-               $(event_card).css({ "border-left": "10px solid #FF1744" });
-               $(event_card).append(event_name);
-               $(".events-container").append(event_card);
-           }
-           else {
-               // Go through and add each event as a card to the events container
-               for(var i=0; i<event_data3.length; i++) { //TODO: 여기에 Event 엔티티 컬럼들 추가
-                   var event_card = $("<div class='event-card'></div>");
-                   var event_name = $("<div class='event-name'>"+event_data3[i].name+":</div>"); // occasion 대신 변수명 //TODO: 작동 체크
-                   var event_location = $("<div class='event-location'>"+event_data3[i].location+"</div>"); // invited_count 대신 변수명 //TODO: 작동 체크
-                   $(event_card).append(event_name).append(event_location); // 요소 추가하면 여기도 추가 //TODO: 작동 체크
-                   $(".events-container").append(event_card);
-               }
-           }
+   // ajax로 이벤트 받아오기 끝
 };
 
 // Event handler for when a month is clicked
