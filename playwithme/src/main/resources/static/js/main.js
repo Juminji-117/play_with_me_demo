@@ -116,10 +116,10 @@ function date_click(event) {
    success: function(data){
        console.log("통신성공");
        //console.log(data);
-       //event_data2.push(data); // 아래 미작동시 후보코드, 문제: 이 코드는 배열 속 배열 생성
-       event_data2 = data.slice();
-       console.log(event_data2); // 제대로 출력
-       console.log(event_data2.length); // 제대로 출력
+       event_data2.push(data); // 아래 미작동시 후보코드, 문제: 이 코드는 배열 속 배열 생성
+       //event_data2 = data.slice();
+       console.log(event_data2[0]); // 제대로 출력
+       console.log(event_data2[0].length); // 제대로 출력
 
    },
    error:function(){
@@ -128,15 +128,15 @@ function date_click(event) {
    })
 
     // 캘린더 날짜와 이벤트 날짜 동일한지 체크
-    //console.log("event_data2 그대로 있는지 아래 확인 : ");
-    //console.log(event_data2);
-     var event_data3 = []
-     for(var i=0; i<event_data2.length; i++) {
-           var event = event_data2[i];
-           //console.log("event :");
-           //console.log(event); // 제대로 작동
-           const str = event_data2[i].date;
-           // console.log(str); // 2022-08-15T17:30:00로 출력
+    console.log("event_data2 그대로 있는지 아래 확인 : ");
+    console.log(event_data2[0]); // 확인
+     for(var i=0; i<event_data2[0].length; i++) {
+          var event_data3 = []
+           var event = event_data2[0][i];
+           console.log("event :");
+           console.log(event); // 제대로 작동
+           const str = event_data2[0][i].date;
+           console.log(str); // 2022-08-15T17:30:00로 출력
            var a=str.split("-")[0]
            var b=str.split("-")[1]
            var c=str.split("-")[2].split("T")[0]
@@ -145,10 +145,11 @@ function date_click(event) {
            // console.log(c); // 15
           // var strArr = str.toString().split('-'); // 후보
            //console.log(strArr[0], strArr[1]-1, strArr[2]); // 후보
-           var dt = new Date();
+              var dt = new Date();
            if(a==dt.getFullYear() &&
               b==dt.getMonth()+1 &&
-               c==dt.getDate()) {//TODO: event가 event_data3로 push가 안되고 있음. 배열->배열 저장 서치해보기
+               c==dt.getDate()) {//TODO: 이 조건문 false
+               console.log('실행')
                    event_data3.push(event);
                    console.log("event_data3 :");
                    console.log(event_data3);
