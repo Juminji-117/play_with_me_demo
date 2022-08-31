@@ -74,6 +74,7 @@ function days_in_month(month, year) {
     var monthEnd = new Date(year, month + 1, 1);
     return (monthEnd - monthStart) / (1000 * 60 * 60 * 24);
 }
+
 // Event handler for when a date is clicked
 function date_click(event) {
     $(".events-container").show(250);
@@ -82,79 +83,122 @@ function date_click(event) {
     $(this).addClass("active-date");
     show_events(event.data.events, event.data.month, event.data.day);
 
-    //여기서부터 URL 관련 추가한 부분
-    var dateString = event.data.year + "-";
+      // URL 관련 추가 시작
+
+      // (yyyy-mm-dd) 포맷에 맞게 Date를 String으로 변환
+      // 월, 일 2자리 이하시 0 붙여서 나오도록
+      var dateString = event.data.year + "-";
       if ((event.data.month) < 10) {
-         dateString += "0";
+          dateString += "0";
           }
       dateString += (event.data.month) + "-";
       if (event.data.day < 10) {
-         dateString += "0";
-         }
-         dateString += event.data.day;
-   let params = (new URL(document.location)).searchParams;
-   const categoryName = params.get("category");
-   const categoryName_2 = categoryName;
-   params.set("category",categoryName_2);
-   params.set("date",dateString);
-   const state = { 'category':categoryName_2, 'date': dateString }
-   const title = ''
-   const url = "event?"+ params
-   history.pushState(state, title, url)
-   console.log(categoryName_2);
-   let name2 = params.get("date");
-   console.log(name2);
-   // URL 관련 추가 끝
+          dateString += "0";
+          }
+      dateString += event.data.day;
 
-   //ajax로 Event 받아오기
-   $.ajax({
-   type:"GET",
-   async: false, // 동기 호출(실행 다 끝난 다음에 다음 로직 수행)
-   url:"/getEvent?"+ params,
-   dataType:"JSON",
+       let params = (new URL(document.location)).searchParams;
+       let categoryName = params.get("category");
+       const categoryName_2 = categoryName;
+       params.set("category",categoryName_2);
+       params.set("date",dateString);
 
-   success: function(data){
-       console.log("통신성공");
-       //console.log("data:")
-       //console.log(data); // 데이터는 클릭시 계속 잘 담아와짐
-       console.log("push하기 전 event_data2");
-       console.log(event_data2);
-       console.log("push하기 전 event_data2[0]");
-       console.log(event_data2[0]);
-       event_data2.push(data); // 아래 미작동시 후보코드, 문제: 이 코드는 배열 속 배열 생성
-       //event_data2 = data.slice();
-       console.log(event_data2[0]); // TODO: 두번째 시도시 실패
-       console.log(event_data2[0].length); // TODO: 두번째 시도시 실패
+       // 페이지 갱신 없이 URL만 변경하도록
+       const state = { 'category':categoryName_2, 'date': dateString }
+       const title = ''
+       const url = "event?"+ params
+       history.pushState(state, title, url)
+      // URL 관련 추가 끝
 
-          // event-container에 event를 event-card에 담아 전달 //TODO:클릭할 때마다 변해야 되는데 안변함. 배열에 계속 값이 들어가있음.비워주기
-            $(".events-container").empty();
-            $(".events-container").show(250);
-            if(event_data2[0].length===0) {
-                  var event_card = $("<div class='event-card'></div>");
-                  var event_name = $("<div class='event-name'>There are no events planned for Today.</div>");
-                  $(event_card).css({ "border-left": "10px solid #FF1744" });
-                  $(event_card).append(event_name);
-                  $(".events-container").append(event_card);
-              }
+     // ajax로 "/getEvent?category=categoryName_2&date=dateString" 호출해서 List<Event> 받아오기
+     $.ajax({
+       type:"GET",
+       async: false, // 동기 호출
+       url:"/getEvent?" + params,
+       dataType:"JSON",
+
+       success: function(data){
+             console.log("통신성공");
+             //console.log("data:")
+             //console.log(data);
+             console.log("push하기 전 event_data2");
+             console.log(event_data2);
+             console.log("push하기 전 event_data2[0]");
+             console.log(event_data2[0]);
+             event_data2.push(data);
+             //event_data2 = data.slice();
+             console.log(event_data2[0]);
+             console.log(event_data2[0].length);
+
+             // event-container에 event를 event-card에 담아 전달
+              $(".events-container").empty();
+              $(".events-container").show(250);
+              // 이벤트가 없을 경우
+              if(event_data2[0].length===0) {
+                 var event_card = $("<div class='event-card'></div>");
+                 var event_name = $("<div class='event-name'> 해당 날짜는 일정이 없습니다 😵 </div>");
+                 $(event_card).css({ "border-left": "10px solid #FF1744" });
+                 $(event_card).append(event_name);
+                 $(".events-container").append(event_card);
+                  }
+              // 이벤트가 있는 경우
               else {
                    for(var i=0; i<event_data2[0].length; i++) {
-                   var event_card = $("<div class='event-card'></div>");
-                   var event_name = $("<div class='event-name'>행사명 : "+event_data2[0][i].name+"</div>");
-                   var event_location = $("<div class='event-location'> 위치 : "+event_data2[0][i].location+"</div>");
-                   var event_dateString = $("<div class='event-dateString'>일시 : "+event_data2[0][i].date.split("T")[0]+"</div>");
-                   var event_urlNotice = $("<div class='event-urlNotice'> 모집 게시판 바로가기 </div>");
-                   $(event_card).append(event_name).append(event_location).append(event_dateString).append(event_urlNotice);
-                   $(".events-container").append(event_card);
-          }
-          }
+                       var event_card = $("<div class='event-card'></div>");
+                       var event_name = $("<div class='event-name'>"+event_data2[0][i].name+"</div>");
+                       var event_location = $("<div class='event-location'>"+event_data2[0][i].location+"</div>");
+                       var event_dateString = $("<div class='event-dateString'>"+event_data2[0][i].date.split("T")[0]+"</div>");
+                       var event_urlNotice = $("<div class='id event-urlNotice'> 모집 게시판 바로가기 </div>");
+                       $(event_card).append(event_name).append(event_location).append(event_dateString).append(event_urlNotice);
+                       $(".events-container").append(event_card);
+                   }
 
-          event_data2.length=0; // 객체 비워주기
-   },
-   error:function(){
-       console.log("통신에러");
-   }
-   })
-   // ajax로 이벤트 받아오기 끝
+                   // 모집 게시판 클릭시 해당 BoardId 리턴하도록
+                   const event_cards = document.querySelectorAll(".id");
+                   event_cards.forEach(el => {
+                     el.onclick = (e) => {
+                       const nodes = [...e.target.parentElement.parentElement.children]; // event_card의 부모인 events_container 자식들(계층적 단위) 저장
+                       //console.log(e.target.parentElement.parentElement, nodes);
+                       const event_cards_index = nodes.indexOf(e.target.parentElement); // 해당 event_card가 events_container의 몇 번째 자식인지 index 리턴
+
+                       // ajax로 boardId 받아오도록 event_cards_index를 URL 파라미터에 추가
+                       let params = (new URL(document.location)).searchParams;
+                        params.set("index",event_cards_index);
+
+                       // ajax로 BoardId 요청
+                       $.ajax({
+                              type:"GET",
+                              async: false,
+                              url:"/getBoardId?" + params,
+                              dataType:"JSON",
+
+                              success: function(data){
+                                    console.log("통신성공");
+                                    var board_id= data; // 받아온 데이터 board_id에 저장
+
+                                    // boardId만을 URL 파라미터로 설정하여 해당 이벤트와 일대일 관계인 board 페이지로 이동
+                                    let params = (new URL(document.location)).searchParams;
+                                    params.delete('date');
+                                    params.delete('category');
+                                    params.set("id",board_id);
+
+                                    window.location.href = "/event/board?" + params
+                              },
+                              error:function(){
+                                    console.log("통신에러");
+                              }
+                          }) // ajax 요청 끝
+                       }
+                   }); // 이벤트 카드 클릭 이벤트 핸들러 끝
+              }
+
+             // 객체 비워주기
+             event_data2.length=0;
+        },
+       error:function(){
+             console.log("통신에러");
+        }
+     })
 };
 
 // Event handler for when a month is clicked
@@ -234,7 +278,7 @@ function new_event(event) {
 }
 
 // Adds a json event to event_data
-function new_event_json(name, count, date, day) { // TODO: json 형태말고 일반 객체 속성을 event_data["events"]배열에 저장하는 법 찾아보기
+function new_event_json(name, count, date, day) {
     var event = {
         "occasion": name,
         "invited_count": count,
@@ -250,27 +294,32 @@ function show_events(events, month, day) {
     // Clear the dates container
     $(".events-container").empty();
     $(".events-container").show(250);
-    //console.log(event_data["events"]);
+    console.log(event_data["events"]);
     // If there are no events for this date, notify the user
     if(events.length===0) {
         var event_card = $("<div class='event-card'></div>");
-        var event_name = $("<div class='event-name'>There are no events planned for "+month+" "+day+".</div>");
+        var event_name = $("<div class='event-name'> 📆 원하는 날짜를 클릭해보세요! </div>");
         $(event_card).css({ "border-left": "10px solid #FF1744" });
         $(event_card).append(event_name);
         $(".events-container").append(event_card);
     }
     else {
         // Go through and add each event as a card to the events container
-        for(var i=0; i<events.length; i++) { //TODO: 여기에 Event 엔티티 컬럼들 추가
+        for(var i=0; i<events.length; i++) {
             var event_card = $("<div class='event-card'></div>");
-            var event_name = $("<div class='event-name'>"+events[i]["name"]+":</div>"); // occasion 대신 변수명
-            var event_location = $("<div class='event-location'>"+events[i]["location"]+"</div>"); // invited_count 대신 변수명
-            $(event_card).append(event_name).append(event_location); // 요소 추가하면 여기도 추가
+            var event_name = $("<div class='event-name'>"+events[i]["occasion"]+":</div>");
+            var event_count = $("<div class='event-count'>"+events[i]["invited_count"]+" Invited</div>");
+            if(events[i]["cancelled"]===true) {
+                $(event_card).css({
+                    "border-left": "10px solid #FF1744"
+                });
+                event_count = $("<div class='event-cancelled'>Cancelled</div>");
+            }
+            $(event_card).append(event_name).append(event_count);
             $(".events-container").append(event_card);
         }
     }
 }
-
 
 // Checks if a specific date has any events
 function check_events(day, month, year) {
@@ -285,17 +334,13 @@ function check_events(day, month, year) {
     }
     return events;
 }
-
-
-//TODO: 작동 체크
-//어차피 slice하면 sample date 사라짐
-//함수 내부에서 var 붙이면 지역변수, 안붙이면 전역변수
-//함수내부가 아닐 때는 var 꼭 붙여야 함
+// ajax로 가져온 이벤트 리스트 담을 배열
 var event_data2=[];
 
 // Given data for events in JSON format
 var event_data = {
     "events": [
+    /*
     {
         "occasion": " Repeated Test Event ",
         "invited_count": 120,
@@ -379,10 +424,11 @@ var event_data = {
         "month": 5,
         "day": 11
     }
+    */
     ]
 };
 
-//TODO
+
 const months = [
     1,
     2,
