@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"><head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Your Timeline</title>
+        <link rel="stylesheet" href="/mypage/timeline/style.css" />
+    </head>
+<body>
+<section class="intro">
+    <div class="container">
+        <h1> TimeLine <i class="fa fa-history" aria-hidden="true"></i> </h1>
+
+    </div>
+</section>
+
+<section class="timeline">
+    <ul>
+        <li th:each="events, num : ${events}">
+            <div>
+                <span class="timeline-content-info-date">
+                    [[${#strings.substring(events.date,0,10)}]]
+                </span>
+                <h3>
+                    [[${events.name}]]
+                </h3>
+                <span class="timeline-content-info-title">
+                    <i class="fa fa-certificate" aria-hidden="true"></i>
+                [[${events.location}]]
+                </span>
+            </div>
+        </li>
+    </ul>
+</section>
+<script src="/mypage/timeline/main.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</body>
+</html>
