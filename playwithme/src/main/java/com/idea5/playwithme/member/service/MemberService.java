@@ -6,7 +6,7 @@ import com.idea5.playwithme.member.domain.MemberRole;
 import com.idea5.playwithme.member.dto.KakaoUser;
 
 
-import com.idea5.playwithme.timeline.exception.MemberNotFoundException;
+import com.idea5.playwithme.member.exception.MemberNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

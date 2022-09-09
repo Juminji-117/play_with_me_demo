@@ -1,6 +1,7 @@
 package com.idea5.playwithme.event.domain;
 
 import com.idea5.playwithme.comment.domain.Comment;
+import com.idea5.playwithme.timeline.domain.Timeline;
 import lombok.*;
 import com.idea5.playwithme.board.domain.Board;
 import org.springframework.data.annotation.CreatedDate;

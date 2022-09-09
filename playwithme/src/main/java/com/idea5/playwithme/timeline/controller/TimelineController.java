@@ -1,25 +1,21 @@
 package com.idea5.playwithme.timeline.controller;
 
-import com.idea5.playwithme.board.domain.Board;
 import com.idea5.playwithme.event.domain.Event;
 import com.idea5.playwithme.member.domain.Member;
 import com.idea5.playwithme.timeline.domain.Timeline;
-import com.idea5.playwithme.timeline.domain.TimelineRequestDto;
+import com.idea5.playwithme.timeline.dto.TimelineRequestDto;
 import com.idea5.playwithme.member.service.MemberService;
 import com.idea5.playwithme.timeline.service.TimelineService;
 import com.idea5.playwithme.together.domain.Together;
 import com.idea5.playwithme.together.service.TogetherService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -34,8 +30,6 @@ public class TimelineController {
     private final TimelineService timelineMemoService;
     private final TogetherService togetherService;
     private final TimelineService timelineService;
-    private List<Timeline> timelines = new ArrayList<>();
-
 
     //@PreAuthorize("isAuthenticated()")
     @GetMapping("")
@@ -50,7 +44,10 @@ public class TimelineController {
         Member member = memberService.findMember(principal.getName());
 
         // 해당 회원의 Timeline 리스트
-        timelines = member.getTimelineList();
+        List<Timeline> timelines = member.getTimelineList();
+
+        //해당 회원의 Together 리스트
+        List<Together> togethers = member.getTogetherList();
 
         // 위 리스트에서 이벤트들만 추출
         List<Event> events = timelines.stream().map(Timeline::getEvent).collect(Collectors.toList());
@@ -84,24 +81,29 @@ public class TimelineController {
         });
 
         model.addAttribute("events", events);
+        model.addAttribute("togethers", togethers);
         model.addAttribute("timelines", timelines);
+        model.addAttribute("requestDto", new TimelineRequestDto());
 
         return "timeline";
     }
 
-    // 댓글 작성
-    @PostMapping("/memo/{together-id}")
-    @ResponseBody
-    public ResponseEntity memoSave(Principal principal, @PathVariable Long id, @RequestBody TimelineRequestDto timelineRequestDto) {
+    // 타임라인 메모 작성, 수정
+    @PostMapping("/memo/{timeline_id}")
+    public String memoSave(Principal principal, @PathVariable("timeline_id") Long id, @Valid TimelineRequestDto timelineRequestDto) {
         // 로그인 회원 리턴
         Member member = memberService.findMember(principal.getName());
 
-        // Together id 리턴
-        Together together = togetherService.findById(id);
+        // Together id == Timeline id
+        // Together id로 together 리턴
+        long togetherId= id;
+        Together together = togetherService.findById(togetherId);
 
         Event event = together.getArticle().getBoard().getEvent();
 
-        return ResponseEntity.ok(timelineService.memoSave(member, together, timelineRequestDto, event));
+        timelineService.memoSave(id, member, together, timelineRequestDto, event);
+
+        return "redirect:/mypage/timeline";
     }
 
 }

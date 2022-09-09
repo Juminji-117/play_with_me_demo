@@ -3,7 +3,7 @@ package com.idea5.playwithme.member.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.idea5.playwithme.member.domain.Member;
 import com.idea5.playwithme.member.dto.KakaoUser;
-import com.idea5.playwithme.timeline.exception.MemberNotFoundException;
+import com.idea5.playwithme.member.exception.MemberNotFoundException;
 import com.idea5.playwithme.member.service.KakaoService;
 import com.idea5.playwithme.member.service.MemberService;
 import lombok.RequiredArgsConstructor;

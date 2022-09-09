@@ -1,6 +1,6 @@
 package com.idea5.playwithme.together.service;
 
-import com.idea5.playwithme.member.exception.DataNotFoundException;
+import com.idea5.playwithme.timeline.exception.DataNotFoundException;
 import com.idea5.playwithme.together.domain.Together;
 import com.idea5.playwithme.together.repository.TogetherRepository;
 import lombok.RequiredArgsConstructor;

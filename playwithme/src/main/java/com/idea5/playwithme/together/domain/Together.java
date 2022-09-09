@@ -30,7 +30,7 @@ public class Together {
 
 //    @OneToOne(cascade = CascadeType.REMOVE)
 //    @JoinColumn(name = "timeline_id")
-//    private Timeline timeline; // 일대일 양방향 매핑 (읽기 전용)
+//    private Timeline timeline; // 읽기 전용
 
 }
 
