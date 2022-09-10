@@ -285,7 +285,7 @@ span {
    color: #024cf7;
    }
 
-  #memo, #btn-memo-delete, #btn-memo-save {
+  #memo, #btn-memo-delete, #btn-memo-save #btn-memo-update {
     font-family: 'HoengseongHanu';
     margin: 3px;
     }

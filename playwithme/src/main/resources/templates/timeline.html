@@ -34,18 +34,40 @@
                 [[${events.location}]]
                 </span>
 
+                <!-- 작성--><!--TODO 등록기능은 작동확인-->
                 <span th:each="timelines, num2 : ${timelines}">
                     <span th:if="${num.index}==${num2.index}">
-                    [[${timelines.memo}]]
+                <form onsubmit="spaceCheck(this); return false;"
+                      th:action="@{|/mypage/timeline/memo/${timelines.id}|}" method="post"
+                      th:object="${requestDto}"
+                      th:if="${timelines.memo}==null"
+                      >
+                    <textarea th:field="*{memo}" id="memo" class="form-control" rows="3" placeholder="Write your own memo here!"></textarea>
+                        <input type="submit" value="등록" class="btn btn-dark btn-sm">
+                </form>
+                    </span>
+                </span>
 
-                    <form onsubmit="spaceCheck(this); return false;" th:action="@{|/mypage/timeline/memo/${timelines.id}|}" method="post">
 
-                        <input type="hidden" id="togethersId"  th:value="${timelines.id}">
+                <span th:each="timelines, num2 : ${timelines}">
+                    <span th:if="${num.index}==${num2.index} and ${timelines.memo}!=null">
+                        <!--조회-->
+                        <span  th:classappend="${timelines.id}" th:text="${timelines.memo}"></span>
+                            <!-- 수정버튼--> <!--TODO-->
+                            <a href="#" id="btn-memo-update" class="btn btn-dark btn-sm" th:onclick="findHideId([[${timelines.id}]])" data-toggle="collapse" th:attr="data-target='.multi-collapse-'+${timelines.id}">수정</a>
+                            <!--삭제버튼--> <!--TODO-->
+                        <input type="button" value="삭제" id="btn-memo-delete" class="btn btn-dark btn-sm" >
 
-                            <textarea th:if="${timelines.memo}==null" th:field="${requestDto.memo}" id="memo" class="form-control" rows="3" placeholder="Write your own memo here!"></textarea>
-                         <input type="submit" value="수정 및 저장" class="btn btn-dark btn-sm" id="btn-memo-save">
-                        <input type="submit" value="삭제" class="btn btn-dark btn-sm" id="btn-memo-delete">
-                    </form>
+
+                        <form onsubmit="spaceCheck(this); return false;"
+                          class="collapse"
+                          th:classappend="'multi-collapse-'+${timelines.id}"
+                          th:action="@{|/mypage/timeline/memo/${timelines.id}|}" method="post">
+
+                            <input type="hidden" id="togethersId"  th:value="${timelines.id}">
+                            <textarea th:text="${requestDto.memo}" id="memo" class="form-control" rows="3" placeholder="Write your own memo here!"></textarea>
+                            <input type="submit" value="저장" id="btn-memo-save" class="btn btn-dark btn-sm">
+                        </form>
                     </span>
                 </span>
             </div>

@@ -41,3 +41,12 @@ const isSpace = form.querySelector('.form-control').value.trim();
         }
         form.submit();
 }
+
+    function findHideId(id){
+        const find = document.getElementsByClassName(id);
+        console.log(find.length);
+        for(var i = 0; i < find.length; i++){
+            find[i].style.display ='none';
+
+        }
+    }
