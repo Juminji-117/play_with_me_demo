@@ -31,22 +31,21 @@
   window.addEventListener("scroll", callbackFunc);
 })();
 
-// memo form check
+// 메모 폼 체크
 function spaceCheck(form){
 const isSpace = form.querySelector('.form-control').value.trim();
     if (isSpace.length == 0) {
         alert("내용을 입력해주세요.");
-            // form.query.focus();
+            form.query.focus();
         return;
         }
         form.submit();
 }
 
+// 수정 버튼 클릭시 기존 메모와 수정버튼, 삭제버튼 안보이도록
     function findHideId(id){
         const find = document.getElementsByClassName(id);
-        console.log(find.length);
         for(var i = 0; i < find.length; i++){
             find[i].style.display ='none';
-
         }
     }
