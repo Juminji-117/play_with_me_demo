@@ -54,18 +54,19 @@
                         <!--조회-->
                         <span  th:classappend="${timelines.id}" th:text="${timelines.memo}"></span>
                             <!-- 수정버튼--> <!--TODO-->
-                            <a href="#" id="btn-memo-update" class="btn btn-dark btn-sm" th:onclick="findHideId([[${timelines.id}]])" data-toggle="collapse" th:attr="data-target='.multi-collapse-'+${timelines.id}">수정</a>
+                            <a class="btn btn-dark btn-sm" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="true" aria-controls="multiCollapseExample1" th:classappend="${timelines.id}"  th:onclick="findHideId([[${timelines.id}]])">수정</a>
                             <!--삭제버튼--> <!--TODO-->
-                        <input type="button" value="삭제" id="btn-memo-delete" class="btn btn-dark btn-sm" >
+                        <input type="button" value="삭제" id="btn-memo-delete" th:classappend="${timelines.id}" class="btn btn-dark btn-sm" >
 
 
-                        <form onsubmit="spaceCheck(this); return false;"
-                          class="collapse"
-                          th:classappend="'multi-collapse-'+${timelines.id}"
-                          th:action="@{|/mypage/timeline/memo/${timelines.id}|}" method="post">
+
+                        <form class="collapse multi-collapse"
+                              id="multiCollapseExample1"
+                              th:action="@{|/mypage/timeline/memo/modify/${timelines.id}|}" method="post">
 
                             <input type="hidden" id="togethersId"  th:value="${timelines.id}">
-                            <textarea th:text="${requestDto.memo}" id="memo" class="form-control" rows="3" placeholder="Write your own memo here!"></textarea>
+                            <textarea class="form-control" id="update-memo" rows="3" name="memo" th:text="${timelines.memo}"></textarea>
+
                             <input type="submit" value="저장" id="btn-memo-save" class="btn btn-dark btn-sm">
                         </form>
                     </span>
