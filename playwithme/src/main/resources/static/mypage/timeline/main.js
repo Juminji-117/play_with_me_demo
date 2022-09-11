@@ -36,7 +36,6 @@ function spaceCheck(form){
 const isSpace = form.querySelector('.form-control').value.trim();
     if (isSpace.length == 0) {
         alert("내용을 입력해주세요.");
-            form.query.focus();
         return;
         }
         form.submit();

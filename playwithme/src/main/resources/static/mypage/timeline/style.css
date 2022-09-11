@@ -285,14 +285,13 @@ span {
    color: #024cf7;
    }
 
- #box-form {
+ #show-memo-box {
   box-sizing: border-box;
   padding: 1rem;
   background-color: hsl(0, 0%, 100%);
   border: 3px solid hsl(0, 0%, 90%);
   gap: 2rem;
   }
-
 
   #btn-memo-update {
     position: absolute;
@@ -301,10 +300,10 @@ span {
     }
 
     #btn-memo-delete {
-        position: absolute;
-        right: 5%;
-        bottom: 10%;
-        }
+      position: absolute;
+      right: 5%;
+      bottom: 10%;
+      }
 
   #new-memo, #update-memo, .btn btn-dark btn-sm {
     font-family: 'HoengseongHanu';
