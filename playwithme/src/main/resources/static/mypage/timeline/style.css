@@ -293,7 +293,7 @@ span {
   gap: 2rem;
   }
 
-  #btn-memo-update {
+  .btn-memo-update {
     position: absolute;
     right: 13%;
     bottom: 10%;
@@ -317,6 +317,6 @@ span {
      border-radius: 2px;
     }
 
-    #memo-update-form {
+    .memo-update-form {
     display:none;
     }
