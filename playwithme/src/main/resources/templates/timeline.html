@@ -55,16 +55,16 @@
                 <span th:each="timelines, num2 : ${timelines}">
                     <span th:if="${num.index}==${num2.index} and ${timelines.memo}!=null">
                         <span id="show-memo-box" th:classappend="${timelines.id}">
-                        <!--메모 조회-->
-                        <span id="memo" th:text="${timelines.memo}" th:classappend="${timelines.id}"></span>
-                        <!-- 메모 수정 버튼-->
-                        <button class="btn-memo-update" th:onclick="findHideId([[${timelines.id}]])" th:classappend="${timelines.id}"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                        <!--메모 삭제 버튼--> <!--TODO-->
-                        <button id="btn-memo-delete" class="btn btn-dark btn-sm" th:classappend="${timelines.id}"><i class="fa fa-times" aria-hidden="true"></i></button>
+                            <!--메모 조회-->
+                            <span id="memo" th:text="${timelines.memo}" th:classappend="${timelines.id}"></span>
+                            <!-- 메모 수정 버튼-->
+                            <button id="btn-memo-update" class="btn btn-dark btn-sm" th:onclick="findIdToHide([[${timelines.id}]]); findIdToShow([[${num2.index}]]);" th:classappend="${timelines.id}"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                            <!--메모 삭제 버튼--> <!--TODO-->
+                            <button id="btn-memo-delete" class="btn btn-dark btn-sm" th:onclick="confirmMsg([[${events.name}]],[[${timelines.id}]])" th:classappend="${timelines.id}"><i class="fa fa-times" aria-hidden="true"></i></button>
                         </span>
                         <!--메모 수정폼-->
-                        <form id="${num2.index}"
-                              class ="memo-update-form"
+                        <form id ="memo-update-form"
+                              th:classappend="${num2.index}"
                               th:action="@{|/mypage/timeline/memo/modify/${timelines.id}|}" method="post">
 
                             <input type="hidden" id="togethersId"  th:value="${timelines.id}">
@@ -81,20 +81,5 @@
     </ul>
 </section>
 <script src="/mypage/timeline/main.js"></script>
-<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
-<script>
-
-       const event_btns = document.querySelectorAll(".btn-memo-update");
-                   event_btns.forEach(el => {
-                     el.onclick = (e) => {
-                       const nodes = [...e.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.children]; // event_card의 부모인 events_container 자식들(계층적 단위) 저장
-                       console.log(e.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement, nodes);
-                       const event_index = nodes.indexOf(e.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement); // 해당 event_card가 events_container의 몇 번째 자식인지 index 리턴
-                       console.log(event_index);
-          $( '#event_index' ).toggle();
-
-}});
-
-</script>
 </body>
 </html>

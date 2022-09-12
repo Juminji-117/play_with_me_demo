@@ -42,9 +42,26 @@ const isSpace = form.querySelector('.form-control').value.trim();
 }
 
 // 수정 버튼 클릭시 기존 메모와 수정버튼, 삭제버튼 안보이도록
-    function findHideId(id){
-        const find = document.getElementsByClassName(id);
-        for(var i = 0; i < find.length; i++){
-            find[i].style.display ='none';
-        }
+function findIdToHide(id){
+    const find = document.getElementsByClassName(id);
+    for(var i = 0; i < find.length; i++){
+        //console.log('숨김완료')
+        find[i].style.display ='none';
     }
+}
+
+// 수정 버튼 클릭시 수정폼 나타도록
+function findIdToShow(id){
+    const find = document.getElementsByClassName(id);
+    for(var i = 0; i < find.length; i++){
+        find[i].style.display ='block';
+    }
+}
+
+// 메모 삭제 전 confirm
+function confirmMsg(name,id){
+    if ( !confirm(name + " 메모를 삭제할까요?") ) {
+        return false;
+        }
+    window.location.href = "/mypage/timeline/memo/delete/"+id;
+}
