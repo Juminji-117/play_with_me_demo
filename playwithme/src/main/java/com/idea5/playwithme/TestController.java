@@ -20,5 +20,38 @@ public class TestController {
     public String recruitConfirmForm(@PathVariable("board_id") Long boardId, @PathVariable("article_id") Long articleId) {
         return "recruit_confirm_form";
     }
-
+@GetMapping("/about")
+    public String about () {
+        return "about";
 }
+
+    @GetMapping("/blog")
+    public String blog () {
+        return "blog";
+    }
+    @GetMapping("/contact")
+    public String contact () {
+        return "contact";
+    }
+
+    @GetMapping("/elements")
+    public String elements () {
+        return "elements";
+    }
+
+    @GetMapping("/index")
+    public String index () {
+        return "index";
+    }
+
+    @GetMapping("/portfolio")
+    public String portfolio () {
+        return "portfolio";
+    }
+
+    @GetMapping("/single")
+    public String single () {
+        return "single";
+    }
+}
+
