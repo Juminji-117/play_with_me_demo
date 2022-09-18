@@ -15,22 +15,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) {
-        Integer intg = 1;
-        Event baseballTop1 = eventService.findEventTop1ByArticleCount(intg);
-        intg = 2;
-        Event soccerTop1 = eventService.findEventTop1ByArticleCount(intg);
-        intg = 3;
-        Event basketballTop1 = eventService.findEventTop1ByArticleCount(intg);
-        intg = 4;
-        Event musicalTop1 = eventService.findEventTop1ByArticleCount(intg);
-        intg = 5;
-        Event concertTop1 = eventService.findEventTop1ByArticleCount(intg);
 
-        model.addAttribute("baseballTop1", "baseballTop1");
-        model.addAttribute("soccerTop1", "soccerTop1");
-        model.addAttribute("basketballTop1", "basketballTop1");
-        model.addAttribute("musicalTop1", "musicalTop1");
-        model.addAttribute("concertTop1", "concertTop1");
 
 
         return "home";

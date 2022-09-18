@@ -52,8 +52,5 @@ public class EventService {
         return eventRepository.findByNameContainsOrLocationContains(kw, kw,pageable);
     }
 
-    public Event findEventTop1ByArticleCount(Integer categoryNo){
-        return eventRepository.findEventTop1ByArticleCount(categoryNo);
-    }
 }
 
