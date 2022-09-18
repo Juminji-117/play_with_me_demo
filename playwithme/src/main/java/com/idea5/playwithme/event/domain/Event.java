@@ -37,8 +37,8 @@ public class Event {
     private LocalDateTime date;
 
 
-//    @OneToOne(mappedBy = "event", fetch = FetchType.LAZY)
-//    private Board board; // 일대일 양방향 매핑 ( 읽기 전용 )
+    @OneToOne(mappedBy = "event", fetch = FetchType.LAZY)
+    private Board board; // 일대일 양방향 매핑 ( 읽기 전용 )
 
 //    @OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE)
 //    private List<Timeline> timelines = new ArrayList<>(); // 일대다 양방향 매핑 (읽기 전용)
