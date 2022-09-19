@@ -1,3 +1,4 @@
+// querydsl
 buildscript {
 	ext {
 		queryDslVersion = "5.0.0"
@@ -48,8 +49,7 @@ dependencies {
 	implementation group: 'org.jsoup', name: 'jsoup', version: '1.15.2'
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.6' // 쿼리 파라미터 로그 남기기
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect' // 타임리프 레이아웃 적용
-
-//querydsl 추가
+	//querydsl
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
 }
@@ -59,7 +59,7 @@ tasks.named('test') {
 }
 
 
-//querydsl 추가 시작
+//querydsl
 def querydslDir = "$buildDir/generated/querydsl"
 
 querydsl {

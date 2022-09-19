@@ -55,6 +55,5 @@ public class EventService {
     public Event findTopEventByArticleCount(Integer categoryNo){
         return eventRepository.findTopEventByArticleCount(categoryNo);
     }
-
 }
 

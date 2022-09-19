@@ -1,7 +1,5 @@
 package com.idea5.playwithme.home.controller;
 
-import com.idea5.playwithme.article.domain.Article;
-import com.idea5.playwithme.article.service.ArticleService;
 import com.idea5.playwithme.board.domain.Board;
 import com.idea5.playwithme.board.service.BoardService;
 import com.idea5.playwithme.event.domain.Event;
@@ -11,18 +9,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.List;
-
 @AllArgsConstructor
 @Controller
 public class HomeController {
     private final EventService eventService;
     private final BoardService boardService;
 
-
     @GetMapping("/")
-    public String home(Model model) {
-
+    public String home(Model model) { // TODO : 중복 제거 리팩토링
         Event baseballTop = eventService.findTopEventByArticleCount(1);
         Event soccerTop = eventService.findTopEventByArticleCount(2);
         Event basketballTop = eventService.findTopEventByArticleCount(3);
