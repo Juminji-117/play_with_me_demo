@@ -7,6 +7,7 @@ import com.idea5.playwithme.comment.service.CommentService;
 import com.idea5.playwithme.event.dto.EventDto;
 import com.idea5.playwithme.member.domain.Member;
 
+import com.idea5.playwithme.member.dto.MemberInfoDTO;
 import com.idea5.playwithme.member.dto.MemberRecruitDto;
 import com.idea5.playwithme.member.service.MemberService;
 import com.idea5.playwithme.review.service.ReviewService;
@@ -68,6 +69,9 @@ public class TogetherController {
         System.out.println("member.getId() = " + member.getId());
         List<TogetherInfoDto> togetherInfos = togetherService.findTogetherListByMemberId(member.getId());
         model.addAttribute("togetherInfos", togetherInfos);
+
+        MemberInfoDTO memberInfo = MemberInfoDTO.builder().nickname(member.getNickname()).gender(member.getGender()).build();
+        model.addAttribute("memberInfo", memberInfo);
 
         return "together_manage";
     }
